@@ -1,11 +1,12 @@
 {
   "name": "astash",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "REST Client for Atlassian Stash",
   "author": "Eric Anderson <e@ericlanderson.com> (http://ericlanderson.com)",
   "directories" : {
     "lib" : "./lib"
   },
+  "main": "lib/astash",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "coffee -o lib -c src/*.coffee"
