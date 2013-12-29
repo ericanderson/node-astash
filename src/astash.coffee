@@ -63,12 +63,12 @@ class Stash
   @private
   ###
   _makeUri: (pathname, basePath="rest/api/#{@options.apiVersion}/") ->
-    uri = url.format(
+    uri = url.format({
       protocol: @options.protocol
       hostname: @options.host
       port: @options.port
       pathname: basePath + pathname
-      )
+    })
 
   ###
   @private
@@ -92,7 +92,7 @@ class Stash
   ###
   _restRequest: (options) ->
     deferred = Q.defer()
-    @logger.log('debug', "#{options.method} #{options.uri}", qs: options.qs)
+    @logger.log('debug', "#{options.method} #{options.uri}", {qs: options.qs})
     logger = @logger
     @request(options, (error, response, body) ->
       return deferred.reject(error) if error?
