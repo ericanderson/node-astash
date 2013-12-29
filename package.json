@@ -1,0 +1,33 @@
+{
+  "name": "astash",
+  "version": "0.1.0",
+  "description": "REST Client for Atlassian Stash",
+  "author": "Eric Anderson <e@ericlanderson.com> (http://ericlanderson.com)",
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "lib/astash",
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "grunt prepublish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericanderson/node-astash.git"
+  },
+  "bugs": {
+    "url": "http://github.com/ericanderson/node-astash/issues"
+  },
+  "license": "BSD",
+  "dependencies": {
+    "request": "~2.30.0",
+    "q": "~0.9.7"
+  },
+  "devDependencies": {
+    "coffee-script": "1.6.x",
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.8.0",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-cli": "~0.1.11"
+  }
+}
