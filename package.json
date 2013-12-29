@@ -9,7 +9,7 @@
   "main": "lib/astash",
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt"
+    "prepublish": "grunt prepublish"
   },
   "repository": {
     "type": "git",

@@ -27,3 +27,4 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['coffeelint', 'coffee']
   grunt.registerTask 'test', ['coffeelint']
+  grunt.registerTask 'prepublish', ['coffee']
