@@ -1,6 +1,6 @@
 {
   "name": "astash",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "REST Client for Atlassian Stash",
   "author": "Eric Anderson <e@ericlanderson.com> (http://ericlanderson.com)",
   "directories": {
