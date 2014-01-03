@@ -39,7 +39,13 @@ class StashPullRequest
   canMerge: ->
     @_stash.canMergePullRequest(@project, @repositorySlug, @id)
 
-
+httpError = (statusCode, originalBody) ->
+  error = new Error("Http error code #{statusCode}")
+  error.statusCode = statusCode
+  error.originalBody = originalBody
+  error.name = "HttpError"
+  console.log originalBody
+  return error
 
 class Stash
   ###
@@ -62,12 +68,12 @@ class Stash
   ###
   @private
   ###
-  _makeUri: (pathname, basePath="rest/api/#{@options.apiVersion}/") ->
+  _makeUri: (pathname) ->
     uri = url.format({
       protocol: @options.protocol
       hostname: @options.host
       port: @options.port
-      pathname: basePath + pathname
+      pathname: pathname
     })
 
   ###
@@ -90,19 +96,17 @@ class Stash
   ###
   @private
   ###
-  _restRequest: (options) ->
+  _restRequest: (options, successCodes=[200]) ->
     deferred = Q.defer()
     @logger.log('debug', "#{options.method} #{options.uri}", {qs: options.qs})
     logger = @logger
     @request(options, (error, response, body) ->
       return deferred.reject(error) if error?
 
-      if (response.statusCode == 404)
-        return deferred.reject(new Error("404 not found: #{options.uri}"))
+      if response.statusCode not in successCodes
+        return deferred.reject(httpError(response.statusCode, body))
 
-      if (response.statusCode != 200)
-        return deferred.reject(new Error(response.statusCode + ': Unable to connect to Stash'))
-
+      return deferred.resolve() unless body
       deferred.resolve(JSON.parse(body))
     )
     deferred.promise
@@ -138,24 +142,24 @@ class Stash
     @_restRequest(
       @_createRequestOptions(
         'GET',
-        "projects/#{projectKey}/repos/#{repositorySlug}/pull-requests/#{pullRequestId}/merge",
+        "rest/api/1.0/projects/#{projectKey}/repos/#{repositorySlug}/pull-requests/#{pullRequestId}/merge",
       )
     )
 
   eachPullRequest: (projectKey, repositorySlug, callback) ->
     options = @_createRequestOptions(
       'GET',
-      "projects/#{projectKey}/repos/#{repositorySlug}/pull-requests",
+      "rest/api/1.0/projects/#{projectKey}/repos/#{repositorySlug}/pull-requests",
       {qs: {limit: 6}}
     )
 
     @_pagedRequest(options, callback, StashPullRequest)
 
-  pullRequests: (projectKey, repositorySlug, callback) ->
+  pullRequests: (projectKey, repositorySlug) ->
     @_restRequest(
       @_createRequestOptions(
         'GET',
-        "projects/#{projectKey}/repos/#{repositorySlug}/pull-requests",
+        "rest/api/1.0/projects/#{projectKey}/repos/#{repositorySlug}/pull-requests",
         {qs: {limit: 3}}
       )
     )
@@ -164,9 +168,24 @@ class Stash
     @_restRequest(
       @_createRequestOptions(
         'POST',
-        "projects/#{projectKey}/repos/#{repositorySlug}/pull-requests/#{pullRequestId}/merge",
+        "rest/api/1.0/projects/#{projectKey}/repos/#{repositorySlug}/pull-requests/#{pullRequestId}/merge",
         {qs: {version: version}}
       )
+    )
+
+  deleteBranch: (projectKey, repositorySlug, branch, atRev) ->
+    req = {
+      name: branch
+    }
+    req['endPoint'] ?= atRev if atRev?
+
+    @_restRequest(
+      @_createRequestOptions(
+        'DELETE',
+        "/rest/branch-utils/1.0/projects/#{projectKey}/repos/#{repositorySlug}/branches",
+        {json: req}
+      ),
+      [204]
     )
 
 module.exports = exports = Stash

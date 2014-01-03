@@ -21,7 +21,8 @@
   "license": "BSD",
   "dependencies": {
     "request": "~2.30.0",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "coffee-script": "1.6.x",
