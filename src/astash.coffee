@@ -1,6 +1,6 @@
 url = require('url')
 _ = require('underscore')
-Q = require 'Q'
+Q = require 'q'
 
 ###
 Includes all content from /rest/api/1.0/projects/{projectKey}/repos/{repositorySlug}/pull-requests/{pullRequestId}
