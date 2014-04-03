@@ -1,8 +1,16 @@
 module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-coffeelint')
+  grunt.loadNpmTasks('grunt-contrib-watch')
 
   grunt.initConfig({
+    watch:
+      scripts:
+        files: 'src/**/*.coffee'
+        tasks: ['default']
+        options:
+          debounceDelay: 250
+          atBegin: true
     coffee:
       compile:
         options:

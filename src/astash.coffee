@@ -164,6 +164,15 @@ class Stash
       )
     )
 
+  eachBranch: (projectKey, repositorySlug, callback) ->
+    options = @_createRequestOptions(
+      'GET',
+      "/rest/api/1.0/projects/#{projectKey}/repos/#{repositorySlug}/branches",
+      {qs: {limit: 6}}
+    )
+
+    @_pagedRequest(options, callback)
+
   mergePullRequest: (projectKey, repositorySlug, pullRequestId, version = -1) ->
     @_restRequest(
       @_createRequestOptions(
