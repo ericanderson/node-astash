@@ -6,7 +6,6 @@ Provides an (incomplete) node library for communicating with Atlassian Stash.
 
 | Branch        | Build Status                                | Coffee Docs                 |
 | --------------|---------------------------------------------|-----------------------------|
-| **develop**   | [![Develop Build Status][]][travis project] | [Coffee Docs][master docs]  |
 | **master**    | [![Master Build Status][]][travis project]  | [Coffee Docs][develop docs] |
 
 [travis project]: https://travis-ci.org/ericanderson/node-astash
